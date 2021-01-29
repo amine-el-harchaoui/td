@@ -1,5 +1,7 @@
 package representation;
 
+import java.util.HashMap;
+
 public class Representant {
 
 	private final int numero;
@@ -7,11 +9,19 @@ public class Representant {
 	private final String prenom;
 	private String adresse;
 	private float salaireFixe;
+	private ZoneGeographique secteur;
+	private HashMap<Integer,Float> CAmensuel = new HashMap<Integer, Float>();
 
 	public Representant(int numero, String nom, String prenom, ZoneGeographique secteur) {
+		float CA = 0;
 		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
+		this.secteur = secteur;
+		for (int i=0;i<12;i++) {
+			CAmensuel.put(i,CA);
+		}
+
 	}
 
 	public int getNumero() {
@@ -42,15 +52,9 @@ public class Representant {
 		this.salaireFixe = salaireFixe;
 	}
 
-	public ZoneGeographique getSecteur() {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
-	}
+	public ZoneGeographique getSecteur() { return secteur; }
 
-	public void setSecteur(ZoneGeographique secteur) {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
-	}
+	public void setSecteur(ZoneGeographique secteur) { this.secteur = secteur; }
 
 	/**
 	 * Enregistre le CA de ce représentant pour un mois donné. 
@@ -59,14 +63,14 @@ public class Representant {
 	 **/
 	public void enregistrerCA(int mois, float montant) {
 		// vérifier les paramètres
-		if (mois < 0 || mois > 11) {
+		if  (mois < 0 || mois > 11) {
 			throw new IllegalArgumentException("Le mois doit être compris entre 0 et 11");
 		}
 		if (montant < 0) {
 			throw new IllegalArgumentException("Le montant doit être positif ou null");
 		}
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+
+		CAmensuel.put(mois, montant);
 	}
 
 	/**
@@ -76,8 +80,7 @@ public class Representant {
 	 * @return le salaire pour ce mois, tenant compte du salaire fixe, de l'indemnité repas, et du pourcentage sur CA
 	 */
 	public float salaireMensuel(int mois, float pourcentage) {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		return ((CAmensuel.get(mois)*pourcentage)+salaireFixe+secteur.getIndemniteRepas());
 	}
 
 	@Override
